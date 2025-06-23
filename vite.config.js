@@ -6,6 +6,7 @@ import SortCss from 'postcss-sort-media-queries';
 
 export default defineConfig(({ command }) => {
   return {
+    base: '/goit-js-hw-09/',
     define: {
       [command === 'serve' ? 'global' : '_global']: {},
     },
@@ -13,7 +14,8 @@ export default defineConfig(({ command }) => {
     build: {
       sourcemap: true,
       rollupOptions: {
-        input: glob.sync('./src/*.html'),
+        // Змінено на пошук html-файлів відносно root
+        input: glob.sync('*.html'),
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
@@ -39,7 +41,8 @@ export default defineConfig(({ command }) => {
     },
     plugins: [
       injectHTML(),
-      FullReload(['./src/**/**.html']),
+      // Шлях змінився, щоб коректно спрацював з root='src'
+      FullReload(['**/*.html']),
       SortCss({
         sort: 'mobile-first',
       }),
